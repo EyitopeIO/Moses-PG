@@ -37,7 +37,7 @@ All text above, and the splash screen must be included in any redistribution
 #define PUMP_ON digitalWrite(13,HIGH)
 #define PUMP_OFF digitalWrite(13,LOW)
 const char *request = "http://api.openweathermap.org/data/2.5/forecast?q=Akure,NG&APPID="
-"400fa291bf97f191c1efb1413430f2d9&mode=json&units=metric&cnt=2";
+"<YOUR_API_KEY_HERE>&mode=json&units=metric&cnt=2";
 const char *apn = "etisalat.com.ng";
 const char uname[] = "";
 const char pword[] = "";
