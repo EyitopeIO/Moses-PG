@@ -1,2 +1,1 @@
-Device connects to the internet, checks the weather forecast, checks the soil moisture content, then decides if
-a pumping machine should turn on a water pump.
+Device connects to the internet, checks the weather forecast, checks the soil moisture content, then decides if a pumping machine should turn on a water pump. Network connectivity is with SIm800l, A GSM module. Development board used is Arduino Nano.
