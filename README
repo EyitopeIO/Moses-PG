@@ -1,1 +1,2 @@
-README
+Device connects to the internet, checks the weather forecast, checks the soil moisture content, then decides if
+a pumping machine should turn on a water pump.
