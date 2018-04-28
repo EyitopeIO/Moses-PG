@@ -6,11 +6,11 @@ int NETWORK::initModule(int trials) {
 	sendCmdAndWaitForResponse("AT\r\n", "OK", TIMEOUT, TRIALS);
 	
 	//enable full functionality of modem
-	sendCmdAndWaitForResponse("AT+CFUN=1\r\n", "OK", TIMEOUT, TRIALS),
+	sendCmdAndWaitForResponse("AT+CFUN=1\r\n", "OK", TIMEOUT, TRIALS);
 
 	//check if simcard ready to send sms or send data.
 	//it returns +CPIN:READY
-	sendCmdAndWaitForResponse("AT+CPIN?\r\n", "READY", TIMEOUT, TRIALS)
+	sendCmdAndWaitForResponse("AT+CPIN?\r\n", "READY", TIMEOUT, TRIALS);
 }
 
 int NETWORK::waitForServerResponse(void)
@@ -25,10 +25,10 @@ int NETWORK::waitForServerResponse(void)
 	return 1;
 }
 
-char NETWORK:readResponse(void)
+char NETWORK::readResponse(void)
 {
 	char c;
-	if(serial.available()){
+	if(Serial.available()){
 		c = serialSIM800.read();
 		return (char)c;
 	}
@@ -42,7 +42,7 @@ int NETWORK::initAndSendSMS(const char *message, const char *phone_number)
 	//set the phone number
 	char cmd[12];
 	sprintf(cmd,"AT+CMGS=\"%s\"\r", phone_number);
-	sendCmdAndWait(cmd, ">", TIMEOUT, TRIALS);
+	sendCmdAndWaitForResponse(cmd, ">", TIMEOUT, TRIALS);
 	
 	//it is assumed the user has added the '\r' character.
 	serialSIM800.write(message);
@@ -51,18 +51,18 @@ int NETWORK::initAndSendSMS(const char *message, const char *phone_number)
 	//i couldn't find a way to enter this on the serial monitor.
 	//you could write some code to send it when you enter some text.
 	serialSIM800.write((char)26); //or 0X1A;
-	if (!checkForResponse("OK",TIMEOUT)) {
+	if (!checkResponse("OK",TIMEOUT)) {
 		return 0;
 	}
 }
 
-int NETWORK::sendCmdAndWaitForResponse(const char *cmd, const char *a_part_of_expected_response, TIMEOUT, TRIALS){
-	int trials = 0;
+int NETWORK::sendCmdAndWaitForResponse(const char *cmd, const char *a_part_of_expected_response, int timeout, int trials){
+	int tries = 0;
 	do {
 		delay(500);
 		serialSIM800.write(cmd);
 		trials++;
-		if(trials == TRIALS) {
+		if(tries == trials) {
 			return 0;
 		}
 	} while (!checkResponse(a_part_of_expected_response,TIMEOUT));
@@ -87,14 +87,14 @@ int NETWORK::checkResponse(const char *response, int timeout) {
 	return 1;
 }
 
-NETWORK::emptyBuffer(char *buffer){
+void NETWORK::emptyBuffer(char *buffer){
 	unsigned int i;
 	for (i=0;i<strlen(buffer);i++){
 		buffer[i] = 0;
 	}
 }
 	
-NETWORK::setupInternet(const char *apn, const char *request)
+int NETWORK::setupInternet(const char *apn, const char *request)
 {
 	char cmd[50];
 	
@@ -108,7 +108,7 @@ NETWORK::setupInternet(const char *apn, const char *request)
 	emptyBuffer(cmd);
 
 	//enable the gprs
-	sendCmdAndWaitForResponse("AT+SAPBR=1,1\r\n");
+	sendCmdAndWaitForResponse("AT+SAPBR=1,1\r\n", "OK", TIMEOUT, TRIALS);
 
 	//was connection setup properly?
 	sendCmdAndWaitForResponse("AT+SAPBR=2,1\r\n", "OK", TIMEOUT, TRIALS);
@@ -160,4 +160,3 @@ int NETWORK::sendRequest(void) {
 	sendCmdAndWait(cmd
 }
 */
-
