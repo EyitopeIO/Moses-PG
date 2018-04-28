@@ -78,6 +78,9 @@ void setup() {
   display.begin();
   display.setContrast(50);
   display.setTextSize(1);
+
+  //using the function F() is to tell the compiler to put the
+  //string in the flash memory. a lot of strings eat ram
   SEND(F("Setting up network..."));
   SHOW;
   WAIT(1000);
@@ -92,7 +95,7 @@ void loop() {
     gsm.setupInternet(apn, request);
     gsm.sendRequest();
     SEND(F("Request sent.")); SHOW; WAIT(1000); CLR;
-    SEND(F("Waiting for server...")); SHOW; WAIT(1000); CLR;
+    SEND(F("Waiting for server...")); SHOW; WAIT(1000);
 
     if(gsm.waitForServerResponse() != 0){
       receiveJsonData();
@@ -127,7 +130,7 @@ void receiveJsonData(void)
 void MakeDecisionToPump(String nowT, String later, String weatherType) {
   int indexNow = nowT.indexOf(weatherType);
   int indexLater = later.indexOf(weatherType);
-  unsigned int value = 0;
+  int value = 0;
   //turn moisture sensor on here.
   for(int i=0;i<30;i++){
     value = analogRead(SENSE);
